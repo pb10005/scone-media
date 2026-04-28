@@ -58,8 +58,26 @@ export default async function ArticleDetailPage({ params }: Props) {
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://scone-media.netlify.app';
   const pageUrl = `${siteUrl}/articles/${article.slug}`;
 
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    headline: article.title,
+    description: article.excerpt,
+    author: { '@type': 'Person', name: article.author_name },
+    datePublished: article.published_at,
+    url: pageUrl,
+    keywords: article.tags.join(', '),
+    publisher: {
+      '@type': 'Organization',
+      name: 'SCONE MEDIA',
+      url: siteUrl,
+    },
+    ...(article.cover_image && { image: article.cover_image }),
+  };
+
   return (
     <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <ArticleViewTracker slug={article.slug} articleType={article.article_type} tags={article.tags} />
       <div className="max-w-3xl mx-auto px-4 py-8">
         <div className="mb-6">

@@ -47,8 +47,27 @@ export default async function AnthologyDetailPage({ params }: Props) {
     year: 'numeric', month: 'long', day: 'numeric',
   });
 
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://scone-media.netlify.app';
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'CreativeWorkSeries',
+    name: anthology!.title,
+    description: anthology!.description,
+    url: `${siteUrl}/anthologies/${anthology!.slug}`,
+    datePublished: anthology!.published_at,
+    keywords: anthology!.tags.join(', '),
+    ...(anthology!.cover_image && { image: anthology!.cover_image }),
+    hasPart: works.map((w) => ({
+      '@type': 'CreativeWork',
+      name: w.title,
+      author: { '@type': 'Person', name: w.author_name },
+      url: `${siteUrl}/works/${w.slug}`,
+    })),
+  };
+
   return (
     <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <AnthologyViewTracker slug={anthology.slug} tags={anthology.tags} />
       <div className="max-w-5xl mx-auto px-4 py-8">
         <div className="mb-6">

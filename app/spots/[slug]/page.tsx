@@ -38,8 +38,27 @@ export default async function SpotDetailPage({ params }: Props) {
 
   const visitedDate = new Date(spot.visited_at).toLocaleDateString('ja-JP', { year: 'numeric', month: 'long', day: 'numeric' });
 
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://scone-media.netlify.app';
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'LocalBusiness',
+    name: spot.title,
+    description: spot.description,
+    address: {
+      '@type': 'PostalAddress',
+      addressLocality: spot.area,
+      streetAddress: spot.address,
+      addressCountry: 'JP',
+    },
+    url: `${siteUrl}/spots/${spot.slug}`,
+    ...(spot.business_hours && { openingHours: spot.business_hours }),
+    ...(spot.cover_image && { image: spot.cover_image }),
+    ...(spot.map_url && { hasMap: spot.map_url }),
+  };
+
   return (
     <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <SpotViewTracker slug={spot.slug} />
       <div className="max-w-3xl mx-auto px-4 py-8">
         <div className="mb-6">

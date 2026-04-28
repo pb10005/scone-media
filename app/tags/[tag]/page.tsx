@@ -17,10 +17,15 @@ export async function generateStaticParams() {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { tag } = await params;
   const tagName = decodeURIComponent(tag);
+  const { tag: tagInfo } = getContentByTag(tagName);
+  const hasUniqueDescription = tagInfo.description && tagInfo.description.length >= 20;
   return {
     title: `#${tagName}`,
-    description: `「${tagName}」タグが付いたアンソロジー・収録作・記事・スポットの一覧。`,
+    description: hasUniqueDescription
+      ? tagInfo.description
+      : `「${tagName}」タグが付いたアンソロジー・収録作・記事・スポットの一覧。`,
     alternates: { canonical: `/tags/${tag}` },
+    ...(!hasUniqueDescription && { robots: { index: false } }),
   };
 }
 

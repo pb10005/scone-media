@@ -51,8 +51,27 @@ export default async function WorkDetailPage({ params }: Props) {
     year: 'numeric', month: 'long', day: 'numeric',
   });
 
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://scone-media.netlify.app';
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'CreativeWork',
+    name: work.title,
+    author: { '@type': 'Person', name: work.author_name },
+    datePublished: work.published_at,
+    url: `${siteUrl}/works/${work.slug}`,
+    keywords: work.tags.join(', '),
+    ...(anthology && {
+      isPartOf: {
+        '@type': 'CreativeWorkSeries',
+        name: anthology.title,
+        url: `${siteUrl}/anthologies/${anthology.slug}`,
+      },
+    }),
+  };
+
   return (
     <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <WorkViewTracker slug={work.slug} anthologySlug={work.anthology} format={work.format} />
       <div className="max-w-3xl mx-auto px-4 py-8">
         {/* パンくず */}
