@@ -1,0 +1,81 @@
+@import "tailwindcss";
+
+/* ============================================================
+   スコーンカラー定義（D-3確定: ブラウン・クリーム系）
+   ============================================================ */
+@theme inline {
+  /* ブランドカラー */
+  --color-scone-brown: #A0826D;
+  --color-scone-cream: #F5E6D3;
+  --color-scone-accent: #8B4513;
+  --color-scone-dark: #5C3317;
+  --color-scone-light: #FAF3EC;
+  --color-scone-muted: #D4B896;
+
+  /* システムカラー */
+  --color-background: #FDFAF7;
+  --color-foreground: #2C1810;
+  --color-card: #FFFFFF;
+  --color-card-foreground: #2C1810;
+  --color-border: #E8D5C0;
+  --color-muted: #F0E4D4;
+  --color-muted-foreground: #8B7355;
+
+  /* フォント */
+  --font-sans: 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', 'Meiryo', sans-serif;
+  --font-serif: 'Hiragino Mincho ProN', 'Yu Mincho', 'Georgia', serif;
+}
+
+/* ============================================================
+   ベーススタイル
+   ============================================================ */
+:root {
+  --background: #FDFAF7;
+  --foreground: #2C1810;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', 'Meiryo', -apple-system, BlinkMacSystemFont, sans-serif;
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ============================================================
+   散文・本文エリア用スタイル
+   ============================================================ */
+.prose-scone {
+  font-family: 'Hiragino Mincho ProN', 'Yu Mincho', 'Georgia', serif;
+  line-height: 2.0;
+  letter-spacing: 0.05em;
+}
+
+.prose-scone h1,
+.prose-scone h2,
+.prose-scone h3 {
+  font-family: 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', sans-serif;
+  font-weight: 700;
+}
+
+/* ============================================================
+   アニメーション
+   ============================================================ */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.4s ease-out both;
+}
+
+/* ============================================================
+   フォーカスリング（アクセシビリティ）
+   ============================================================ */
+:focus-visible {
+  outline: 2px solid #A0826D;
+  outline-offset: 2px;
+  border-radius: 2px;
+}
